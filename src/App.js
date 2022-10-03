@@ -1,24 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import React,{useState,useEffect} from 'react';
+import {data} from './data';
+
+const url = 'https://api.github.com/users';
 
 function App() {
+  const [gusers, setGusers] = useState([]);
+  async function getData() {
+    const response =  await fetch(url);
+    const users = await response.json();
+    setGusers(users);
+  }
+
+  useEffect(()=>{
+    getData();
+  },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    {gusers.map((gusers)=>{
+      return (
+        <li>{gusers.login}</li>
+      )
+    })}
+    </>
   );
 }
 
